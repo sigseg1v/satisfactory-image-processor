@@ -5,6 +5,8 @@ import pako from 'pako';
 const args = process.argv.slice(2);
 if (args.length === 0) {
     console.error('Usage: node satisimg.mjs <path-to-file> [--decode-input]');
+    console.error('\t<path-to-file>: Should be a .cbp file from satisfactory-calculator');
+    console.error('\t[--decode-input]: Instructs the tool to output a file called "input.json" containing the decoded json from the input file')
     exit(1);
 }
 
