@@ -34,9 +34,11 @@ if (!imgData || imgData.length === 0) {
 }
 
 const img = await loadImage(imgData);
-const canvas = createCanvas(img.width, img.height);
+const w = Math.floor(img.width);
+const h = Math.floor(img.height);
+const canvas = createCanvas(w, h);
 const canvasContext = canvas.getContext('2d');
-canvasContext.drawImage(img, 0, 0, img.width, img.height);
+canvasContext.drawImage(img, 0, 0, w, h);
 
 const output = {
     "saveVersion": 46,
@@ -46,13 +48,13 @@ const output = {
     "powerCircuits": {},
     "hiddenConnections": {},
     "minX": 0,
-    "maxX": img.width * gameObjectSize,
+    "maxX": w * gameObjectSize,
     "minY": 0,
-    "maxY": img.height * gameObjectSize
+    "maxY": h * gameObjectSize
 };
 
-for (let y = 0; y < img.height; y++) {
-    for (let x = 0; x < img.width; x++) {
+for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
         const block = processPixelToObject(x, y, canvasContext); // item to draw or null if transparent
         if (block !== null) {
             output.data.push(block);
@@ -64,14 +66,14 @@ const finalFileName = outputFileName || 'output.cbp';
 
 await writeFile(finalFileName, pako.deflate(JSON.stringify(output)));
 
-console.log(`output Satisfactory block image of size ${img.width}x${img.height} with block count of ${output.data.length} to ${finalFileName}`);
+console.log(`output Satisfactory block image of size ${w}x${h} with block count of ${output.data.length} to ${finalFileName}`);
 exit(0);
 
 // =====
 
 function translatePixelToGameTranslation(x, y) {
     // draw upright on the y and z axis
-    return [0, x * gameObjectSize, y * gameObjectSize];
+    return [0, x * gameObjectSize, (h - y) * gameObjectSize];
 }
 
 function translatePixelToGameColor(x, y, colorData) {
