@@ -9,6 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "canvas": "^2.11.2",
     "pako": "^2.1.0"
   }
 }
